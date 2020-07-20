@@ -8,12 +8,13 @@ def folder_unpacker(current_root, new_root, target_type=None):
     Retrieves all files of the desired type from a hierarchy of folders of
     indeterminate size.
 
-    Arguments:
-        current_root - The source folder from which files are extracted,
+    Args:
+        current_root (str): The source folder from which files are extracted,
         at the top of the hierarchy.
-        new_root - The folder to which the extracted files will be copied,
+        new_root (str): The folder to which the extracted files will be copied,
         must be created in advance.
-        target_type (optional) - The type of the target files
+        target_type (:obj: ('str', 'tuple', list'), optional):
+        Defaults to None. The type of the target files.
         (Example: jpg, pdf, png; without a dot at the beginning);
         if you want to extract files of the diffrent type at the same type,
         pass their types as a tuple; if you don't select the type, all files
@@ -69,11 +70,12 @@ def sorter(current_root, new_root, target_type=None):
     If you also need to sort them, use the folder_unpacker function from
     the same module to extract files from them in advance.
 
-    Arguments:
-        current_root - Source folder with unsorted files
-        new_root - The target folder where the sorted files will be located,
-        must be created in advance.
-        target_type (optional) - The type of the target files
+    Args:
+        current_root (str): Source folder with unsorted files
+        new_root (str): The target folder where the sorted files will be 
+        located, must be created in advance.
+        target_type (:obj: ('str', 'tuple', list'), optional):
+        Defaults to None. The type of the target files
         (Example: jpg, pdf, png; without a dot at the beginning);
         if you want to sort files of the diffrent type at the same type,
         pass their types as a tuple; if you don't select the type, all files
