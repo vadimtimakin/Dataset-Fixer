@@ -9,16 +9,27 @@ def folder_unpacker(current_root, new_root, target_type=None):
     indeterminate size.
 
     Args:
+
         current_root (str): The source folder from which files are extracted,
         at the top of the hierarchy.
+
         new_root (str): The folder to which the extracted files will be copied,
         must be created in advance.
+
         target_type (:obj: ('str', 'tuple', list'), optional):
         Defaults to None. The type of the target files.
         (Example: jpg, pdf, png; without a dot at the beginning);
         if you want to extract files of the diffrent type at the same type,
-        pass their types as a tuple; if you don't select the type, all files
-        will be extracted.
+        pass their types as a tuple or a list;
+        if you don't select the type, all files will be extracted. 
+        To determine the file type, I used the filetype
+        package, in particular the 'guess' function with 'mime'.
+        To select the file type you need, see how the above function denotes
+        types and pass them to the already given function as an argument.
+        List of possible types here:
+        "https://pypi.org/project/filetype/"
+        Or here:
+        "https://github.com/t0efL/Dataset-Fixer/blob/master/README.md"
 
     The function does not perform any conversions to the original folder,
     files are not deleted after copying to a new folder.
@@ -30,15 +41,17 @@ def folder_unpacker(current_root, new_root, target_type=None):
         # Working with multiple file types.
         if len(target_type) > 1:
             def flag(x, y):
+                file_type = filetype.guess(x).mime
                 for i in y:
-                    if x.lower().__contains__('.' + str(i)):
+                    if file_type == i:
                         return True
                 return False
 
         # Working with a single file type.
         else:
             def flag(x, y):
-                return x.lower().__contains__('.' + str(y))
+                file_type = filetype.guess(x).mime
+                return file_type == y
 
     # Extracting all files that are not folders.
     else:
@@ -49,9 +62,11 @@ def folder_unpacker(current_root, new_root, target_type=None):
 
     for root, dirs, files in os.walk(current_root):
         for file in files:
-            if flag(file, target_type):
+            if flag(os.path.join(root, file), target_type):
+                # File copying.
                 shutil.copy(os.path.join(root, file), new_root)
             else:
+                # Extracting files from detected folders.
                 if os.path.isdir(root):
                     folder_unpacker(file, new_root, target_type)
 
@@ -79,8 +94,9 @@ def sorter(current_root, new_root, target_type=None):
         target_type (:obj: ('str', 'tuple', list'), optional):
         Defaults to None. The type of the target files;
         if you want to sort files of the diffrent type at the same type,
-        pass their types as a tuple; if you don't select the type, all files
-        will be sorted. To determine the file type, I used the filetype
+        pass their types as a tuple or a list; 
+        if you don't select the type, all files will be sorted.
+        To determine the file type, I used the filetype
         package, in particular the 'guess' function with 'mime'.
         To select the file type you need, see how the above function denotes
         types and pass them to the already given function as an argument.
@@ -129,7 +145,7 @@ def sorter(current_root, new_root, target_type=None):
                     # Create a folder with a name containing the type of
                     # files inside it, if this folder has not been
                     # created yet.
-                    # Next, I use a little formatting, replacing the 
+                    # Next, I use a little formatting, replacing the
                     # '\'characters with '_'characters to avoid a path error.
                     if not os.path.exists(
                             os.path.join(new_root,
