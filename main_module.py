@@ -21,7 +21,7 @@ def folder_unpacker(current_root, new_root, target_type=None):
         (Example: jpg, pdf, png; without a dot at the beginning);
         if you want to extract files of the diffrent type at the same type,
         pass their types as a tuple or a list;
-        if you don't select the type, all files will be extracted. 
+        if you don't select the type, all files will be extracted.
         To determine the file type, I used the filetype
         package, in particular the 'guess' function with 'mime'.
         To select the file type you need, see how the above function denotes
@@ -39,7 +39,7 @@ def folder_unpacker(current_root, new_root, target_type=None):
     if target_type:
 
         # Working with multiple file types.
-        if len(target_type) > 1:
+        if type(target_type) is not str:
             def flag(x, y):
                 file_type = filetype.guess(x).mime
                 for i in y:
@@ -94,7 +94,7 @@ def sorter(current_root, new_root, target_type=None):
         target_type (:obj: ('str', 'tuple', list'), optional):
         Defaults to None. The type of the target files;
         if you want to sort files of the diffrent type at the same type,
-        pass their types as a tuple or a list; 
+        pass their types as a tuple or a list;
         if you don't select the type, all files will be sorted.
         To determine the file type, I used the filetype
         package, in particular the 'guess' function with 'mime'.
@@ -114,7 +114,7 @@ def sorter(current_root, new_root, target_type=None):
     if target_type:
 
         # Working with multiple file types.
-        if len(target_type) > 1:
+        if type(target_type) is not str:
             def flag(x, y):
                 return x in y
 
