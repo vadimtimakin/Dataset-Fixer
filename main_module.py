@@ -24,37 +24,33 @@ def folder_unpacker(current_root, new_root, target_type=None):
     files are not deleted after copying to a new folder.
     """
 
-    # Retrieving only certain types.
+    # Extracting only certain types.
     if target_type:
 
         # Working with multiple file types.
         if len(target_type) > 1:
-            for root, dirs, files in os.walk(current_root):
-                for file in files:
-                    for item in target_type:
-                        if file.lower().__contains__(('.' + str(item))):
-                            shutil.copy(os.path.join(root, file), new_root)
-                            break
-                        else:
-                            if os.path.isdir(root):
-                                folder_unpacker(file, new_root, target_type)
+            def flag(x, y):
+                for i in y:
+                    if x.lower().__contains__('.' + str(i)):
+                        return True
+                return False
 
         # Working with a single file type.
         else:
-            for root, dirs, files in os.walk(current_root):
-                for file in files:
-                    if file.lower().__contains__(('.' + str(target_type))):
-                        shutil.copy(os.path.join(root, file), new_root)
-                    else:
-                        if os.path.isdir(root):
-                            folder_unpacker(file, new_root, target_type)
+            def flag(x, y): return x.lower().__contains__('.' + str(y))
 
-    # Extract all files that are not folders.
+    # Extracting all files that are not folders.
     else:
-        for root, dirs, files in os.walk(current_root):
-            for file in files:
+        target_type = True
+        def flag(x, y): return bool(x or y)
+
+    for root, dirs, files in os.walk(current_root):
+        for file in files:
+            if flag(file, target_type):
+                shutil.copy(os.path.join(root, file), new_root)
+            else:
                 if os.path.isdir(root):
-                    shutil.copy(os.path.join(root, file), new_root)
+                    folder_unpacker(file, new_root, target_type)
 
 
 def sorter(current_root, new_root, target_type=None):
