@@ -1,3 +1,5 @@
+# Dataset-fixer
+
 import shutil
 import os
 import filetype
@@ -5,7 +7,7 @@ import filetype
 
 def folder_unpacker(current_root, new_root, target_type=None):
     """
-    Retrieves all files of the desired type from a hierarchy of folders of
+    Extracts all files of the desired type from a hierarchy of folders of
     indeterminate size.
 
     Args:
@@ -16,8 +18,8 @@ def folder_unpacker(current_root, new_root, target_type=None):
         new_root (str): The folder to which the extracted files will be copied,
         must be created in advance.
 
-        target_type (:obj: ('str', 'tuple', list'), optional):
-        Defaults to None. The type of the target files.
+        target_type (str or tuple or list):
+        Optional, defaults to None. The type of the target files.
         (Example: jpg, pdf, png; without a dot at the beginning);
         if you want to extract files of the diffrent type at the same type,
         pass their types as a tuple or a list;
@@ -91,8 +93,8 @@ def sorter(current_root, new_root, target_type=None):
         new_root (str): The target folder where the sorted files will be
         located, must be created in advance.
 
-        target_type (:obj: ('str', 'tuple', list'), optional):
-        Defaults to None. The type of the target files;
+        target_type (str or tuple or list):
+        Optional, defaults to None. The type of the target files;
         if you want to sort files of the diffrent type at the same type,
         pass their types as a tuple or a list;
         if you don't select the type, all files will be sorted.
@@ -156,3 +158,90 @@ def sorter(current_root, new_root, target_type=None):
                     shutil.copy(os.path.join(root, file),
                                 os.path.join(new_root,
                                              file_type.replace('/', '_')))
+
+
+def splitter_numerical(current_root, new_root, relation):
+    """Splitter function with relation_type='numerical'."""
+    pass
+
+
+def splitter_mutual(current_root, new_root, relation):
+    """Splitter function with relation_type='mutual'."""
+    pass
+
+
+def splitter_percentage(current_root, new_root, relation):
+    """Splitter function with relation_type='percentage'."""
+    pass
+
+
+def splitter(current_root, new_root, relation, relation_type='numerical'):
+    """
+    Splits the existing dataset into several parts in the ratio specified
+    by the user.
+
+    Args:
+
+        current_root (str): Source folder with the dataset.
+
+        new_root (str): The target folder where the split dataset will appear.
+
+        relation (tuple or list): The ratio of parts that the
+        dataset is divided into. The split ratio can be passed in different ways
+        (in all cases, it is a tuple or list containing all the values inside):
+        1) Numerical (int) -  A list or tuple containing the number of files
+        in each part of the split dataset. For example, (1000, 2000, 3000) if
+        there are 6000 files in total in current_root.
+        If the sum of files in different parts of the dataset does not match the
+        number of files in the source folder, you will get an error.
+        2) Mutual relation (float) - A list or tuple containing the ratio of the
+        number of files in different parts of a divided dataset to each other.
+        For example, (1, 1.5, 2) means 1 : 1.5 : 2. In this case, if the source
+        dataset has 4500 files, they will be distributed as 1000, 1500, 2000
+        files respectively.
+        3) Percentage ratio (float) - A list or tuple containing the percentage
+        of the number of files in different parts of the split dataset.
+        Instead of percentages, parts of the whole are used here.
+        For example, (0.5, 0.25, 0.25) means 50%, 25%, 25%.
+        In this case, if the source dataset has 1000 files, they will be
+        distributed as 500, 250, 250 respectively. Make sure that the sum of all
+        the numbers in the list or tuple is equal to 1,
+        otherwise you will get an error.
+        To select one of these types, pass the corresponding value of the
+        relation_type argument to the function (read more about this below).
+
+        relation_type (str): The type of ratio that the dataset
+        will be divided by. This parameter is directly related to the relation
+        parameter. Read the description of the latter to understand what this
+        parameter is for. Each type of relationship corresponds to the following
+        value of the relation_type parameter:
+        1) Numerical - relation_type='numerical'
+        2) Mutual relation - relation_type='mutual'
+        3) Percentage ratio - relation_type='percentage'
+
+    The function does not perform any conversions to the original folder,
+    files are not deleted after copying to a new folder.
+    """
+
+    # Check out the type of relation argument.
+    assert_message = "the relation argument must be a list or tuple."
+    assert type(relation) in (tuple, list), assert_message
+
+    # Making sure that the lenght of relation argument less than the number
+    # files in the source dataset.
+    files = os.listdir(path=current_root)
+    assert_message = "the length of the relation argument cannot be greater "
+    assert_message += "than the number of files in the source folder."
+    assert len(relation) < len(files), assert_message
+
+    # Select the type of relationship interpretations.
+    if relation_type == 'numerical':
+        splitter_numerical(current_root, new_root, relation)
+    elif relation_type == 'mutual':
+        splitter_mutual(current_root, new_root, relation)
+    elif relation_type == 'percentage':
+        splitter_percentage(current_root, new_root, relation)
+    else:
+        assert_message = "invalid relation_type value. Choose one of "
+        assert_message += "'numerical'(default), 'mutual', 'percentage'."
+        assert False, assert_message
