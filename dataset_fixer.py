@@ -195,7 +195,21 @@ def splitter_numerical(current_root, new_root, relation):
 
 def splitter_percentage(current_root, new_root, relation):
     """Splitter function with relation_type='percentage'."""
-    pass
+
+    assert_message = "The sum of the parts as a percentage must be equal to 1:"
+    assert_message += " {0} != 1.".format(sum(relation))
+    assert sum(relation) == 1, assert_message
+
+    # Reducing the ratio to a numerical form
+    # and pass it to the corresponding function.
+    files = os.listdir(path=current_root)
+    numerical = list()
+    for item in relation:
+        item *= len(files)
+        item = int(item)
+        numerical.append(item)
+
+    splitter_numerical(current_root, new_root, numerical)
 
 
 def splitter_mutual(current_root, new_root, relation):
@@ -269,7 +283,7 @@ def splitter(current_root, new_root, relation, relation_type='numerical'):
     assert_message = "the length of the relation argument cannot be greater "
     assert_message += "than the number of files in the source folder."
     assert len(relation) < len(files), assert_message
-    
+
     # Checking for the absence of negative values and zeros.
     for number in relation:
         assert_message = "the relation argument "
