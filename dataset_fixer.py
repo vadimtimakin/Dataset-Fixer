@@ -269,6 +269,12 @@ def splitter(current_root, new_root, relation, relation_type='numerical'):
     assert_message = "the length of the relation argument cannot be greater "
     assert_message += "than the number of files in the source folder."
     assert len(relation) < len(files), assert_message
+    
+    # Checking for the absence of negative values and zeros.
+    for number in relation:
+        assert_message = "the relation argument "
+        assert_message += "can only contain positive values."
+        assert number > 0, assert_message
 
     # Select the type of relationship interpretations.
     if relation_type == 'numerical':
