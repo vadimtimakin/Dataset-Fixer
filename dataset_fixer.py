@@ -162,7 +162,35 @@ def sorter(current_root, new_root, target_type=None):
 
 def splitter_numerical(current_root, new_root, relation):
     """Splitter function with relation_type='numerical'."""
-    pass
+
+    # Checking the validity of the split.
+    files = os.listdir(path=current_root)
+    assert_message = "The number of files in the separated parts of the "
+    assert_message += "dataset does not match the original number of files:"
+    assert_message += " {0} != {1}.".format(sum(relation), len(files))
+    assert sum(relation) == len(files), assert_message
+
+    # Checking for the absence of fractional values.
+    for number in relation:
+        assert_message = "the relation argument "
+        assert_message += "can only contain integer values."
+        assert type(number) == int, assert_message
+
+    # Creating a new folder for each part of the dataset.
+    for i in range(len(relation)):
+        os.mkdir(os.path.join(new_root, (str(i+1) + "_part")))
+
+    # Splitting.
+    part_number = 0
+    iter_point = 0
+    for part in relation:
+        part_number += 1
+        for root, dirs, files in os.walk(current_root):
+            for file in files[iter_point:(iter_point + part)]:
+                shutil.copy(os.path.join(current_root, file),
+                            os.path.join(new_root,
+                                         (str(part_number) + "_part")))
+        iter_point += part
 
 
 def splitter_mutual(current_root, new_root, relation):
