@@ -193,14 +193,22 @@ def splitter_numerical(current_root, new_root, relation):
         iter_point += part
 
 
-def splitter_mutual(current_root, new_root, relation):
-    """Splitter function with relation_type='mutual'."""
-    pass
-
-
 def splitter_percentage(current_root, new_root, relation):
     """Splitter function with relation_type='percentage'."""
     pass
+
+
+def splitter_mutual(current_root, new_root, relation):
+    """Splitter function with relation_type='mutual'."""
+
+    # Reducing the ratio to a percentage form
+    # and pass it to the corresponding function.
+    percentage = list()
+    for item in relation:
+        item = item/sum(relation)
+        percentage.append(item)
+
+    splitter_percentage(current_root, new_root, percentage)
 
 
 def splitter(current_root, new_root, relation, relation_type='numerical'):
