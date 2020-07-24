@@ -74,7 +74,7 @@ def folder_unpacker(current_root, new_root, target_type=None):
                     folder_unpacker(os.path.join(root, file), new_root,
                                     target_type)
 
-                    
+
 def sorter(current_root, new_root, target_type=None):
     """
     Sorts files by their types.
@@ -90,14 +90,14 @@ def sorter(current_root, new_root, target_type=None):
 
     Args:
 
-        current_root (str): Source folder with unsorted files
+        current_root (str): Source folder with unsorted files.
 
         new_root (str): The target folder where the sorted files will be
         located, must be created in advance.
 
         target_type (str or tuple or list):
         Optional, defaults to None. The type of the target files;
-        if you want to sort files of the diffrent type at the same type,
+        if you want to sort files of the diffrent type at the same way,
         pass their types as a tuple or a list;
         if you don't select the type, all files will be sorted.
         To determine the file type, I used the filetype
@@ -236,7 +236,8 @@ def splitter(current_root, new_root, relation, relation_type='numerical'):
 
         current_root (str): Source folder with the dataset.
 
-        new_root (str): The target folder where the split dataset will appear.
+        new_root (str): The target folder where the split dataset will appear,
+        must be created in advance.
 
         relation (tuple or list): The ratio of parts that the
         dataset is divided into. The split ratio can be passed in different ways
@@ -314,7 +315,7 @@ def shuffler(current_root, new_root, seed=None):
         current_root (str): Source folder with the dataset.
 
         new_root (str): The target folder where the shuffled dataset
-        will appear.
+        will appear, must be created in advance.
 
         seed (int): random-seed for shuffling.
 
@@ -341,3 +342,57 @@ def shuffler(current_root, new_root, seed=None):
 
     print("The shuffle is complete. "
           "Make sure that the files in the new folder are sorted by date.")
+
+
+def cleaner(root, target_type):
+    """
+    Deletes files of a certain type from the dataset.
+
+    Args:
+
+        root (str): Source folder with the dataset.
+
+        target_type (str or tuple or list):
+        The type of the target files;
+        if you want to delete files of the diffrent type at the same way,
+        pass their types as a tuple or a list;
+        To determine the file type, I used the filetype
+        package, in particular the 'guess' function with 'mime'.
+        To select the file type you need, see how the above function denotes
+        types and pass them to the already given function as an argument.
+        List of possible types here:
+        "https://pypi.org/project/filetype/"
+        Or here:
+        "https://github.com/t0efL/Dataset-Fixer/blob/master/README.md"
+
+    This function irrevocably deletes files without copying them anywhere in
+    advance. If you still want to save these files to another folder before
+    deleting them from this one, use the folder_unpacker function from the
+    same module.
+    """
+
+    # Working with multiple file types.
+    if type(target_type) is not str:
+        def flag(x, y):
+            file_type = filetype.guess(x).mime
+            for i in y:
+                if file_type == i:
+                    return True
+            return False
+
+    # Working with a single file type.
+    else:
+        def flag(x, y):
+            file_type = filetype.guess(x).mime
+            return file_type == y
+
+    # Deleting.
+    for root, dirs, files in os.walk(root):
+        for file in files:
+            if flag(os.path.join(root, file), target_type):
+                # Deleting folders.
+                if os.path.isdir(os.path.join(root, file)):
+                    shutil.rmtree(os.path.join(root, file))
+                # Deleting files.
+                else:
+                    os.remove(os.path.join(root, file))
