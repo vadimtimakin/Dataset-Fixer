@@ -44,7 +44,13 @@ def folder_unpacker(current_root, new_root, target_type=None):
         # Working with multiple file types.
         if type(target_type) is not str:
             def flag(x, y):
-                file_type = filetype.guess(x).mime
+                file_type = filetype.guess(x)
+                # Fighting with NoneType objects.
+                if file_type:
+                    file_type = file_type.mime
+                else:
+                    print("Something went frong with {0} file".format(x))
+                # Flag.
                 for i in y:
                     if file_type == i:
                         return True
@@ -53,7 +59,13 @@ def folder_unpacker(current_root, new_root, target_type=None):
         # Working with a single file type.
         else:
             def flag(x, y):
-                file_type = filetype.guess(x).mime
+                file_type = filetype.guess(x)
+                # Fighting with NoneType objects.
+                if file_type:
+                    file_type = file_type.mime
+                else:
+                    print("Something went frong with {0} file".format(x))
+                # Flag.
                 return file_type == y
 
     # Extracting all files that are not folders.
@@ -374,7 +386,13 @@ def cleaner(root, target_type):
     # Working with multiple file types.
     if type(target_type) is not str:
         def flag(x, y):
-            file_type = filetype.guess(x).mime
+            file_type = filetype.guess(x)
+            # Fighting with NoneType objects.
+            if file_type:
+                file_type = file_type.mime
+            else:
+                print("Something went frong with {0} file".format(x))
+            # Flag.
             for i in y:
                 if file_type == i:
                     return True
@@ -383,7 +401,13 @@ def cleaner(root, target_type):
     # Working with a single file type.
     else:
         def flag(x, y):
-            file_type = filetype.guess(x).mime
+            file_type = filetype.guess(x)
+            # Fighting with NoneType objects.
+            if file_type:
+                file_type = file_type.mime
+            else:
+                print("Something went frong with {0} file".format(x))
+            # Flag.
             return file_type == y
 
     # Deleting.
