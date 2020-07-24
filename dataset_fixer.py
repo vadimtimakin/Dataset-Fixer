@@ -70,7 +70,7 @@ def folder_unpacker(current_root, new_root, target_type=None):
                 shutil.copy(os.path.join(root, file), new_root)
             else:
                 # Extracting files from detected folders.
-                if os.path.isdir(root):
+                if os.path.isdir(os.path.join(root, file)):
                     folder_unpacker(file, new_root, target_type)
 
 
