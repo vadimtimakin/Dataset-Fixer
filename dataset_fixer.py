@@ -3,6 +3,7 @@
 import shutil
 import os
 import filetype
+import random
 
 
 def folder_unpacker(current_root, new_root, target_type=None):
@@ -301,3 +302,41 @@ def splitter(current_root, new_root, relation, relation_type='numerical'):
         assert_message = "invalid relation_type value. Choose one of "
         assert_message += "'numerical'(default), 'mutual', 'percentage'."
         assert False, assert_message
+
+
+def shuffler(current_root, new_root, seed=None):
+    """
+    Shuffles files in the dataset.
+
+    Args:
+
+        current_root (str): Source folder with the dataset.
+
+        new_root (str): The target folder where the shuffled dataset
+        will appear.
+
+        seed (int): random-seed for shuffling.
+
+    After shuffling all the files and placing them in a new folder, the new
+    folder will most likely be sorted by name by default. Since most files in
+    datasets have similar names, the order may remain the same. In order for
+    the shuffle to take effect, sort the files in the folder by date.
+
+    The function does not perform any conversions to the original folder,
+    files are not deleted after copying to a new folder.
+    """
+
+    # Set up the seed.
+    if seed:
+        random.seed(seed)
+
+    # Shuffling and copying.
+    files = os.listdir(path=current_root)
+    indexes = [i for i in range(len(files))]
+    random.shuffle(indexes)
+    for idx in indexes:
+        file = files[idx]
+        shutil.copy(os.path.join(current_root, file), new_root)
+
+    print("The shuffle is complete. "
+          "Make sure that the files in the new folder are sorted by date.")
