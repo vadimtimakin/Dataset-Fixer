@@ -49,7 +49,7 @@ def folder_unpacker(current_root, new_root, target_type=None):
                 if file_type:
                     file_type = file_type.mime
                 else:
-                    print("Something went frong with {0} file".format(x))
+                    print("Something went frong with {0} file.".format(x))
                 # Flag.
                 for i in y:
                     if file_type == i:
@@ -64,7 +64,7 @@ def folder_unpacker(current_root, new_root, target_type=None):
                 if file_type:
                     file_type = file_type.mime
                 else:
-                    print("Something went frong with {0} file".format(x))
+                    print("Something went frong with {0} file.".format(x))
                 # Flag.
                 return file_type == y
 
@@ -391,7 +391,7 @@ def cleaner(root, target_type):
             if file_type:
                 file_type = file_type.mime
             else:
-                print("Something went frong with {0} file".format(x))
+                print("Something went frong with {0} file.".format(x))
             # Flag.
             for i in y:
                 if file_type == i:
@@ -406,7 +406,7 @@ def cleaner(root, target_type):
             if file_type:
                 file_type = file_type.mime
             else:
-                print("Something went frong with {0} file".format(x))
+                print("Something went frong with {0} file.".format(x))
             # Flag.
             return file_type == y
 
@@ -420,3 +420,37 @@ def cleaner(root, target_type):
                 # Deleting files.
                 else:
                     os.remove(os.path.join(root, file))
+
+
+def cutter(root, number):
+    """
+    Reduces the dataset by deleting unnecessary files.
+
+    Args:
+
+        root (str): Source folder with the dataset.
+
+        number (int): Number of files to delete.
+
+    This function irrevocably deletes files without copying them anywhere in
+    advance. If you still want to save these files to another folder before
+    deleting them from this one, use the folder_unpacker function from the
+    same module.
+    """
+
+    # Checking the validity of the number-argument.
+    files = os.listdir(path=root)
+    assert_message = "Number of files to delete can't be greater than "
+    assert_message += "number of files in the source folder."
+    assert number <= len(files), assert_message
+
+    # Deleting.
+    for root, dirs, files in os.walk(root):
+        for i in range(number):
+            file = files[i]
+            # Deleting folders.
+            if os.path.isdir(os.path.join(root, file)):
+                shutil.rmtree(os.path.join(root, file))
+            # Deleting files.
+            else:
+                os.remove(os.path.join(root, file))
