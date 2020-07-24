@@ -22,7 +22,7 @@ def folder_unpacker(current_root, new_root, target_type=None):
         target_type (str or tuple or list):
         Optional, defaults to None. The type of the target files.
         (Example: jpg, pdf, png; without a dot at the beginning);
-        if you want to extract files of the diffrent type at the same type,
+        if you want to extract files of the diffrent type at the same way,
         pass their types as a tuple or a list;
         if you don't select the type, all files will be extracted.
         To determine the file type, I used the filetype
@@ -71,9 +71,10 @@ def folder_unpacker(current_root, new_root, target_type=None):
             else:
                 # Extracting files from detected folders.
                 if os.path.isdir(os.path.join(root, file)):
-                    folder_unpacker(file, new_root, target_type)
+                    folder_unpacker(os.path.join(root, file), new_root,
+                                    target_type)
 
-
+                    
 def sorter(current_root, new_root, target_type=None):
     """
     Sorts files by their types.
