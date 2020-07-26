@@ -4,6 +4,8 @@ import shutil
 import os
 import filetype
 import random
+import PIL
+from PIL import Image
 
 
 def folder_unpacker(current_root, new_root, target_type=None):
@@ -454,3 +456,50 @@ def cutter(root, number):
             # Deleting files.
             else:
                 os.remove(os.path.join(root, file))
+
+
+def color_type_detector(current_root, new_root, color_type):
+    """
+    Detects images of a specific color model and copies them to a new folder.
+
+    Args:
+
+        current_root (str): Source folder with the dataset with images.
+
+        new_root (str): The target folder where the detected images
+        will appear, must be created in advance.
+
+        color_type (str or tuple or list):
+        The type of the target images;
+        if you want to detect and copy images of the diffrent type at the
+        same way, pass their types as a tuple or a list;
+        List of possible types here:
+        "https://github.com/t0efL/Dataset-Fixer/blob/master/README.md"
+
+    The function does not perform any conversions to the original folder,
+    files are not deleted after copying to a new folder.
+    """
+
+    # Working with multiple color types.
+    if type(color_type) is not str:
+        def flag(x, y):
+            for i in y:
+                if x == i:
+                    return True
+            return False
+
+    # Working with a single color type.
+    else:
+        def flag(x, y):
+            return x == y
+
+    # Detecting and copying.
+    for root, dirs, files in os.walk(current_root):
+        for file in files:
+            try:
+                mode = Image.open(os.path.join(root, file)).mode
+            except (PIL.UnidentifiedImageError, PermissionError):
+                pass
+            else:
+                if flag(mode, color_type):
+                    shutil.copy(os.path.join(root, file), new_root)
