@@ -34,7 +34,7 @@ def folder_unpacker(current_root, new_root, target_type=None):
         List of possible types here:
         "https://pypi.org/project/filetype/"
         Or here:
-        "https://github.com/t0efL/Dataset-Fixer/blob/master/README.md"
+        "https://github.com/t0efL/Dataset-Fixer/blob/master/file_types.txt"
 
     The function does not perform any conversions to the original folder,
     files are not deleted after copying to a new folder.
@@ -125,17 +125,17 @@ def sorter(current_root, new_root, target_type=None):
         List of possible types here:
         "https://pypi.org/project/filetype/"
         Or here:
-        "https://github.com/t0efL/Dataset-Fixer/blob/master/README.md"
+        "https://github.com/t0efL/Dataset-Fixer/blob/master/file_types.txt"
 
 
     The function does not perform any conversions to the original folder,
     files are not deleted after copying to a new folder.
     """
-    
+
     # Creating new folder if it doesn't exist.
     if not os.path.exists(new_root):
         os.mkdir(new_root)
-        
+
     # Sorting only certain types.
     if target_type:
 
@@ -186,7 +186,7 @@ def sorter(current_root, new_root, target_type=None):
 
 def splitter_numerical(current_root, new_root, relation):
     """Splitter function with relation_type='numerical'."""
-    
+
     # Checking the validity of the split.
     files = os.listdir(path=current_root)
     assert_message = "The number of files in the separated parts of the "
@@ -296,11 +296,11 @@ def splitter(current_root, new_root, relation, relation_type='numerical'):
     The function does not perform any conversions to the original folder,
     files are not deleted after copying to a new folder.
     """
-    
+
     # Creating new folder if it doesn't exist.
     if not os.path.exists(new_root):
         os.mkdir(new_root)
-        
+
     # Check out the type of relation argument.
     assert_message = "the relation argument must be a list or tuple."
     assert type(relation) in (tuple, list), assert_message
@@ -352,11 +352,11 @@ def shuffler(current_root, new_root, seed=None):
     The function does not perform any conversions to the original folder,
     files are not deleted after copying to a new folder.
     """
-    
+
     # Creating new folder if it doesn't exist.
     if not os.path.exists(new_root):
         os.mkdir(new_root)
-        
+
     # Set up the seed.
     if seed:
         random.seed(seed)
@@ -392,7 +392,7 @@ def cleaner(root, target_type):
         List of possible types here:
         "https://pypi.org/project/filetype/"
         Or here:
-        "https://github.com/t0efL/Dataset-Fixer/blob/master/README.md"
+        "https://github.com/t0efL/Dataset-Fixer/blob/master/file_types.txt"
 
     This function irrevocably deletes files without copying them anywhere in
     advance. If you still want to save these files to another folder before
@@ -489,12 +489,12 @@ def color_type_detector(current_root, new_root, color_type):
         if you want to detect and copy images of the diffrent type at the
         same way, pass their types as a tuple or a list;
         List of possible types here:
-        "https://github.com/t0efL/Dataset-Fixer/blob/master/README.md"
+        "https://github.com/t0efL/Dataset-Fixer/blob/master/color_types.txt"
 
     The function does not perform any conversions to the original folder,
     files are not deleted after copying to a new folder.
     """
-    
+
     # Creating new folder if it doesn't exist.
     if not os.path.exists(new_root):
         os.mkdir(new_root)
