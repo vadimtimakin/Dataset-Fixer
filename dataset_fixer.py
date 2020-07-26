@@ -6,6 +6,7 @@ import filetype
 import random
 import PIL
 from PIL import Image
+from tqdm import tqdm
 
 
 def folder_unpacker(current_root, new_root, target_type=None):
@@ -78,7 +79,7 @@ def folder_unpacker(current_root, new_root, target_type=None):
             return bool(x or y)
 
     for root, dirs, files in os.walk(current_root):
-        for file in files:
+        for file in tqdm(files):
             if flag(os.path.join(root, file), target_type):
                 # File copying.
                 shutil.copy(os.path.join(root, file), new_root)
@@ -149,7 +150,7 @@ def sorter(current_root, new_root, target_type=None):
             return bool(x or y)
 
     for root, dirs, files in os.walk(current_root):
-        for file in files:
+        for file in tqdm(files):
             # This flag checks that our file is not a folder,
             # which would give an error.
             if os.path.isfile(os.path.join(root, file)):
@@ -202,7 +203,7 @@ def splitter_numerical(current_root, new_root, relation):
     for part in relation:
         part_number += 1
         for root, dirs, files in os.walk(current_root):
-            for file in files[iter_point:(iter_point + part)]:
+            for file in tqdm(files[iter_point:(iter_point + part)]):
                 shutil.copy(os.path.join(current_root, file),
                             os.path.join(new_root,
                                          (str(part_number) + "_part")))
@@ -350,7 +351,7 @@ def shuffler(current_root, new_root, seed=None):
     files = os.listdir(path=current_root)
     indexes = [i for i in range(len(files))]
     random.shuffle(indexes)
-    for idx in indexes:
+    for idx in tqdm(indexes):
         file = files[idx]
         shutil.copy(os.path.join(current_root, file), new_root)
 
@@ -414,7 +415,7 @@ def cleaner(root, target_type):
 
     # Deleting.
     for root, dirs, files in os.walk(root):
-        for file in files:
+        for file in tqdm(files):
             if flag(os.path.join(root, file), target_type):
                 # Deleting folders.
                 if os.path.isdir(os.path.join(root, file)):
@@ -448,7 +449,7 @@ def cutter(root, number):
 
     # Deleting.
     for root, dirs, files in os.walk(root):
-        for i in range(number):
+        for i in tqdm(range(number)):
             file = files[i]
             # Deleting folders.
             if os.path.isdir(os.path.join(root, file)):
@@ -495,7 +496,7 @@ def color_type_detector(current_root, new_root, color_type):
 
     # Detecting and copying.
     for root, dirs, files in os.walk(current_root):
-        for file in files:
+        for file in tqdm(files):
             try:
                 mode = Image.open(os.path.join(root, file)).mode
             except (PIL.UnidentifiedImageError, PermissionError):
