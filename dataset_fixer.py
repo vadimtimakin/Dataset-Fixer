@@ -19,8 +19,7 @@ def folder_unpacker(current_root, new_root, target_type=None):
         current_root (str): The source folder from which files are extracted,
         at the top of the hierarchy.
 
-        new_root (str): The folder to which the extracted files will be copied,
-        must be created in advance.
+        new_root (str): The folder to which the extracted files will be copied.
 
         target_type (str or tuple or list):
         Optional, defaults to None. The type of the target files.
@@ -40,6 +39,10 @@ def folder_unpacker(current_root, new_root, target_type=None):
     The function does not perform any conversions to the original folder,
     files are not deleted after copying to a new folder.
     """
+
+    # Creating new folder if it doesn't exist.
+    if not os.path.exists(new_root):
+        os.mkdir(new_root)
 
     # Extracting only certain types.
     if target_type:
@@ -108,7 +111,7 @@ def sorter(current_root, new_root, target_type=None):
         current_root (str): Source folder with unsorted files.
 
         new_root (str): The target folder where the sorted files will be
-        located, must be created in advance.
+        located.
 
         target_type (str or tuple or list):
         Optional, defaults to None. The type of the target files;
@@ -128,7 +131,11 @@ def sorter(current_root, new_root, target_type=None):
     The function does not perform any conversions to the original folder,
     files are not deleted after copying to a new folder.
     """
-
+    
+    # Creating new folder if it doesn't exist.
+    if not os.path.exists(new_root):
+        os.mkdir(new_root)
+        
     # Sorting only certain types.
     if target_type:
 
@@ -179,7 +186,7 @@ def sorter(current_root, new_root, target_type=None):
 
 def splitter_numerical(current_root, new_root, relation):
     """Splitter function with relation_type='numerical'."""
-
+    
     # Checking the validity of the split.
     files = os.listdir(path=current_root)
     assert_message = "The number of files in the separated parts of the "
@@ -251,8 +258,7 @@ def splitter(current_root, new_root, relation, relation_type='numerical'):
 
         current_root (str): Source folder with the dataset.
 
-        new_root (str): The target folder where the split dataset will appear,
-        must be created in advance.
+        new_root (str): The target folder where the split dataset will appear.
 
         relation (tuple or list): The ratio of parts that the
         dataset is divided into. The split ratio can be passed in different ways
@@ -290,7 +296,11 @@ def splitter(current_root, new_root, relation, relation_type='numerical'):
     The function does not perform any conversions to the original folder,
     files are not deleted after copying to a new folder.
     """
-
+    
+    # Creating new folder if it doesn't exist.
+    if not os.path.exists(new_root):
+        os.mkdir(new_root)
+        
     # Check out the type of relation argument.
     assert_message = "the relation argument must be a list or tuple."
     assert type(relation) in (tuple, list), assert_message
@@ -330,7 +340,7 @@ def shuffler(current_root, new_root, seed=None):
         current_root (str): Source folder with the dataset.
 
         new_root (str): The target folder where the shuffled dataset
-        will appear, must be created in advance.
+        will appear.
 
         seed (int): random-seed for shuffling.
 
@@ -342,7 +352,11 @@ def shuffler(current_root, new_root, seed=None):
     The function does not perform any conversions to the original folder,
     files are not deleted after copying to a new folder.
     """
-
+    
+    # Creating new folder if it doesn't exist.
+    if not os.path.exists(new_root):
+        os.mkdir(new_root)
+        
     # Set up the seed.
     if seed:
         random.seed(seed)
@@ -468,7 +482,7 @@ def color_type_detector(current_root, new_root, color_type):
         current_root (str): Source folder with the dataset with images.
 
         new_root (str): The target folder where the detected images
-        will appear, must be created in advance.
+        will appear.
 
         color_type (str or tuple or list):
         The type of the target images;
@@ -480,6 +494,10 @@ def color_type_detector(current_root, new_root, color_type):
     The function does not perform any conversions to the original folder,
     files are not deleted after copying to a new folder.
     """
+    
+    # Creating new folder if it doesn't exist.
+    if not os.path.exists(new_root):
+        os.mkdir(new_root)
 
     # Working with multiple color types.
     if type(color_type) is not str:
