@@ -47,7 +47,7 @@ def folder_unpacker(current_root, new_root, target_type=None):
     if type(new_root) != str:
         msg = "new_root must be str, not {0}.".format(type(new_root))
         raise ValueError(msg)
-    if type(target_type) not in (str, tuple, list):
+    if target_type and (type(target_type) not in (str, tuple, list)):
         msg = "target_type must be str, "
         msg += "list or tuple, not {0}.".format(type(target_type))
         raise ValueError(msg)
@@ -151,11 +151,11 @@ def sorter(current_root, new_root, target_type=None):
     if type(new_root) != str:
         msg = "new_root must be str, not {0}.".format(type(new_root))
         raise ValueError(msg)
-    if type(target_type) not in (str, tuple, list):
+    if target_type and (type(target_type) not in (str, tuple, list)):
         msg = "target_type must be str, "
         msg += "list or tuple, not {0}.".format(type(target_type))
         raise ValueError(msg)
-    
+
     # Creating new folder if it doesn't exist.
     if not os.path.exists(new_root):
         os.mkdir(new_root)
@@ -390,7 +390,7 @@ def shuffler(current_root, new_root, seed=None):
     The function does not perform any conversions to the original folder,
     files are not deleted after copying to a new folder.
     """
-    
+
     # Checking types of the arguments.
     if type(current_root) != str:
         msg = "current_root must be str, not {0}.".format(type(current_root))
@@ -398,10 +398,10 @@ def shuffler(current_root, new_root, seed=None):
     if type(new_root) != str:
         msg = "new_root must be str, not {0}.".format(type(new_root))
         raise ValueError(msg)
-    if type(seed) != int:
+    if seed and (type(seed) != int):
         msg = "seed must be int, not {0}.".format(type(seed))
         raise ValueError(msg)
-    
+
     # Creating new folder if it doesn't exist.
     if not os.path.exists(new_root):
         os.mkdir(new_root)
@@ -448,7 +448,7 @@ def cleaner(root, target_type):
     deleting them from this one, use the folder_unpacker function from the
     same module.
     """
-    
+
     if type(root) != str:
         msg = "root must be str, not {0}.".format(type(root))
         raise ValueError(msg)
@@ -456,7 +456,7 @@ def cleaner(root, target_type):
         msg = "target_type must be str, "
         msg += "list or tuple, not {0}.".format(type(target_type))
         raise ValueError(msg)
-    
+
     # Working with multiple file types.
     if type(target_type) is not str:
         def flag(x, y):
@@ -511,14 +511,14 @@ def cutter(root, number):
     deleting them from this one, use the folder_unpacker function from the
     same module.
     """
-    
+
     if type(root) != str:
         msg = "root must be str, not {0}.".format(type(root))
         raise ValueError(msg)
     if type(number) != int:
         msg = "number must be int, not {0}.".format(type(number))
         raise ValueError(msg)
-    
+
     # Checking the validity of the number-argument.
     files = os.listdir(path=root)
     assert_message = "Number of files to delete can't be greater than "
@@ -558,7 +558,7 @@ def color_type_detector(current_root, new_root, color_type):
     The function does not perform any conversions to the original folder,
     files are not deleted after copying to a new folder.
     """
-    
+
     # Checking types of the arguments.
     if type(current_root) != str:
         msg = "current_root must be str, not {0}.".format(type(current_root))
@@ -598,3 +598,4 @@ def color_type_detector(current_root, new_root, color_type):
             else:
                 if flag(mode, color_type):
                     shutil.copy(os.path.join(root, file), new_root)
+                    
